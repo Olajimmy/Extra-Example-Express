@@ -59,14 +59,6 @@ router.delete("/:id", async (req, res) => {
   } catch (err) {
     res.status(400).send(err);
   }
-
-  // this was all using arrays
-  // if (req.params.id >= 0 && req.params.id < fruits.length) {
-  //     fruits.splice(req.params.id, 1);
-  //     res.json(fruits);
-  // } else {
-  //     res.send('<p>That is not a valid id</p>')
-  // }
 });
 
 // UPDATE
@@ -91,36 +83,8 @@ router.put("/:id", async (req, res) => {
   } catch (err) {
     res.send(err).status(400);
   }
-  // if (req.params.id >= 0 && req.params.id < fruits.length) {
-  //     // put takes the request body and replaces the entire database entry with it
-  //     // find the id and replace the entire thing with the req.body
-  //     if (req.body.readyToEat === 'on') { // if checked, req.body.readyToEat is set to 'on'
-  //         req.body.readyToEat = true;
-  //     } else { // if not checked, req.body.readyToEat is undefined
-  //         req.body.readyToEat = false;
-  //     }
-  //     fruits[req.params.id] = req.body;
-  //     res.json(fruits[req.params.id]);
-  // } else {
-  //     res.send('<p>That is not a valid id</p>')
-  // }
 });
 
-// we aren't going to use patch
-// patch updates part of it
-// app.patch('/api/fruits/:id', (req, res) => {
-//     if (req.params.id >= 0 && req.params.id < fruits.length) {
-//         // patch only replaces the properties that we give it
-//         // find the id and replace only they new properties
-//         console.log(fruits[req.params.id]);
-//         console.log(req.body)
-//         const newFruit = {...fruits[req.params.id], ...req.body}
-//         fruits[req.params.id] = newFruit;
-//         res.json(fruits[req.params.id]);
-//     } else {
-//         res.send('<p>That is not a valid id</p>')
-//     }
-// })
 //SHOW
 
 // CREATE

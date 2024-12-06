@@ -26,8 +26,10 @@ const PORT = process.env.PORT || 5050;
 // const fruits = require('./data/fruits');
 const Fruit = require("./models/fruits");
 const Vege = require("./models/vegetables");
-//import fruit routes
+//IMPORT FRUITS ROUTER
 const fruitRoute = require("./routes/fruits");
+//IMPORT VEGETABLES ROUTER
+const vegetableRoute = require("./routes/vegetables");
 // set up the view engine to be able to use it
 app.set("view engine", "jsx");
 app.set("views", "./views");
@@ -108,112 +110,10 @@ app.get("/index", (req, res) => {
   res.send("<h1>This is an index</h1>");
 });
 
-//use the fruit route
-
+//USE THE FRUIT ROUTE
 app.use("/api/fruits", fruitRoute);
-// ***** ABOVE HERE are NON-API routes
-
-// ***** BELOW is what you would typically see in an API with a clear split
-// *****        between frontend and backend
-
-// add a seed route temporarily
-// app.get("/api/fruits/seed", async (req, res) => {
-//   try {
-//     await Fruit.create([
-//       {
-//         name: "grapefruit",
-//         color: "pink",
-//         readyToEat: true,
-//       },
-//       {
-//         name: "grapes",
-//         color: "purple",
-//         readyToEat: true,
-//       },
-//       {
-//         name: "apple",
-//         color: "green",
-//         readyToEat: false,
-//       },
-//       {
-//         name: "fig",
-//         color: "yellow",
-//         readyToEat: true,
-//       },
-//       {
-//         name: "grapes",
-//         color: "green",
-//         readyToEat: false,
-//       },
-//     ]);
-
-//     res.status(200).redirect("/api/fruits");
-//   } catch (err) {
-//     res.status(400).send(err);
-//   }
-// });
-
-//vegetables
-app.get("/api/vegetables/seed", async (req, res) => {
-  try {
-    await Vege.create([
-      {
-        name: "Brocolli",
-        color: "green",
-        readyToEat: true,
-      },
-      {
-        name: "Tomato",
-        color: "red",
-        readyToEat: true,
-      },
-      {
-        name: "Cucumber",
-        color: "green",
-        readyToEat: true,
-      },
-      {
-        name: "spinach",
-        color: "green",
-        readyToEat: false,
-      },
-      {
-        name: "grapes",
-        color: "green",
-        readyToEat: false,
-      },
-    ]);
-
-    res.status(200).redirect("/api/vegetables");
-  } catch (err) {
-    res.status(400).send(err);
-  }
-});
-
-// INDEX
-// this is called an index route, where you can see all of the data
-// THIS is one version of READ
-// READ many
-// this is only practical when you have small amounts of data
-// but you you can also use an index route and limit the number of responses
-// app.get("/api/fruits", async (req, res) => {
-//   try {
-//     const foundFruits = await Fruit.find({});
-//     res.status(200).json(foundFruits);
-//   } catch (err) {
-//     res.status(400).send(err);
-//   }
-// });
-
-//veges
-app.get("/api/vegetables", async (req, res) => {
-  try {
-    const foundVegetables = await Vege.find({});
-    res.status(200).json(foundVegetables);
-  } catch (err) {
-    res.status(400).send(err);
-  }
-});
+//USE THE VEGETABLES ROUTE
+app.use("/api/vegetables", vegetableRoute);
 
 // N - NEW - allows a user to input a new fruit
 app.get("/fruits/new", (req, res) => {
@@ -221,151 +121,12 @@ app.get("/fruits/new", (req, res) => {
   res.render("fruits/New");
 });
 
-// This should be before the the route with the parameter
-// otherwise, it will get caught up in that route
-// app.get('/api/fruits/descriptions', (req, res) => {
-//     res.send('<h2>descriptions of the fruits</h2>')
-// })
-
-// // DELETE
-// app.delete("/api/fruits/:id", async (req, res) => {
-//   try {
-//     const deletedFruit = await Fruit.findByIdAndDelete(req.params.id);
-//     console.log(deletedFruit);
-//     res.status(200).redirect("/api/fruits");
-//   } catch (err) {
-//     res.status(400).send(err);
-//   }
-
-//   // this was all using arrays
-//   // if (req.params.id >= 0 && req.params.id < fruits.length) {
-//   //     fruits.splice(req.params.id, 1);
-//   //     res.json(fruits);
-//   // } else {
-//   //     res.send('<p>That is not a valid id</p>')
-//   // }
-// });
-
-// // UPDATE
-// // put replaces a resource
-// app.put("/api/fruits/:id", async (req, res) => {
-//   if (req.body.readyToEat === "on") {
-//     // if checked, req.body.readyToEat is set to 'on'
-//     req.body.readyToEat = true;
-//   } else {
-//     // if not checked, req.body.readyToEat is undefined
-//     req.body.readyToEat = false;
-//   }
-
-//   try {
-//     const updatedFruit = await Fruit.findByIdAndUpdate(
-//       req.params.id,
-//       req.body,
-//       { new: true }
-//     );
-//     console.log(updatedFruit);
-//     res.redirect("/api/fruits");
-//   } catch (err) {
-//     res.send(err).status(400);
-//   }
-//   // if (req.params.id >= 0 && req.params.id < fruits.length) {
-//   //     // put takes the request body and replaces the entire database entry with it
-//   //     // find the id and replace the entire thing with the req.body
-//   //     if (req.body.readyToEat === 'on') { // if checked, req.body.readyToEat is set to 'on'
-//   //         req.body.readyToEat = true;
-//   //     } else { // if not checked, req.body.readyToEat is undefined
-//   //         req.body.readyToEat = false;
-//   //     }
-//   //     fruits[req.params.id] = req.body;
-//   //     res.json(fruits[req.params.id]);
-//   // } else {
-//   //     res.send('<p>That is not a valid id</p>')
-//   // }
-// });
-
-// // we aren't going to use patch
-// // patch updates part of it
-// // app.patch('/api/fruits/:id', (req, res) => {
-// //     if (req.params.id >= 0 && req.params.id < fruits.length) {
-// //         // patch only replaces the properties that we give it
-// //         // find the id and replace only they new properties
-// //         console.log(fruits[req.params.id]);
-// //         console.log(req.body)
-// //         const newFruit = {...fruits[req.params.id], ...req.body}
-// //         fruits[req.params.id] = newFruit;
-// //         res.json(fruits[req.params.id]);
-// //     } else {
-// //         res.send('<p>That is not a valid id</p>')
-// //     }
-// // })
-// //SHOW
-
-// // CREATE
-// app.post("/api/fruits", async (req, res) => {
-//   console.log(req.body);
-//   // you should check this when you first start, but then get rid of this console.log
-//   // console.log(req.body);
-//   // need to add logic to change the check or not checked to true or false
-//   if (req.body.readyToEat === "on") {
-//     // if checked, req.body.readyToEat is set to 'on'
-//     req.body.readyToEat = true;
-//   } else {
-//     // if not checked, req.body.readyToEat is undefined
-//     req.body.readyToEat = false;
-//   }
-//   // take this out because it worked with the array, and i want to access my database
-//   // fruits.push(req.body)
-//   try {
-//     const createdFruit = await Fruit.create(req.body);
-//     res.status(200).redirect("/api/fruits");
-//   } catch (err) {
-//     res.status(400).send(err);
-//   }
-//   // res.send('this was the post route');
-//   // res.json(fruits);
-// });
-
-// E - Edit
-app.get("/fruits/:id/edit", async (req, res) => {
-  try {
-    const foundFruit = await Fruit.findById(req.params.id);
-    res.render("fruits/Edit", { fruit: foundFruit, id: req.params.id });
-  } catch (err) {
-    res.status(400).send(err);
-  }
-  // this was with the array
-  // if (req.params.id >= 0 && req.params.id < fruits.length) {
-  //     res.render('fruits/Edit', { fruit: fruits[req.params.id], id: req.params.id});
-  // } else {
-  //     res.send('<p>That is not a valid id</p>')
-  // }
+// N-NEW for vegetables
+app.get("/vegetables/new", (req, res) => {
+  // the 'vegetables/New' in the render needs to be pointing to something in my views folder
+  res.render("vegetables/New");
 });
 
-// SHOW
-// another version of READ is called a show route
-// in this one, we can see more information on an idividual piece of data
-// app.get("/api/fruits/:id", (req, res) => {
-//   // in this case, my unique identifier is going to be the array index
-//   // res.send(`<div>${req.params.id}</div>`)
-//   // this id can be anything, so i probably want to do some checking
-//   // before accessing the array
-//   if (req.params.id >= 0 && req.params.id < fruits.length) {
-//     res.json(fruits[req.params.id]);
-//   } else {
-//     res.send("<p>That is not a valid id</p>");
-//   }
-// });
-
-// this would never be accessed
-// app.get('/api/fruits/descriptions', (req, res) => {
-//     res.send('<h2>descriptions of the fruits</h2>')
-// })
-
-// Custom 404 (not found) middleware
-// since we place this last, it will only process
-// if no other routes have already sent a response
-// We also don't need a next in this VERY SPECIAL instance
-// because it is the last stop along the request-response cycle
 app.use((req, res) => {
   console.log(
     "I am only in this middleware if no other routes have sent a response."
